@@ -1,0 +1,47 @@
+---
+# install docker, shellcheck, code
+- name: store release name in var
+  shell: lsb_release -cs
+  register: release_code
+
+- name: install build-essential
+  apt: name=build-essential
+
+- name: remove legacy docker
+  apt:
+    name:
+      - docker
+      - docker-engine
+      - docker.io
+    state: absent
+
+- name: install docker dep
+  apt:
+    name: 
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg2
+      - software-properties-common
+    state: present
+
+- name: add docker GPG key
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+
+- name: add repository
+  apt_repository:
+    repo: deb [arch=amd64] https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/ubuntu {{release_code.stdout}} stable
+
+- name: install docker
+  apt: name=docker-ce
+  update_cache: yes
+
+- name: using docker registry mirror
+  copy: src=daemon.json dest=/etc/docker/daemon.json
+
+- name: install shellcheck, tmux
+  apt:
+    name:
+      - shellcheck
+      - tmux

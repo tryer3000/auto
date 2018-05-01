@@ -1,0 +1,9 @@
+---
+- name: create npm global dir
+  file: path=/home/{{ansible_env.SUDO_USER}}/.npm-global state=directory
+
+- name: using taobao npm mirror
+  copy: src=.npmrc dest=/home/{{ansible_env.SUDO_USER}}/.npmrc
+
+- name: install tldr
+  npm: name=tldr global=yes

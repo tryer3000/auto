@@ -1,0 +1,14 @@
+---
+- name: setup ubuntu developer environment
+  hosts: all
+  # remote_user: vagrant
+  become: yes
+  become_method: sudo
+  vars:
+    - nodejs_version: 8.x
+  
+  roles:
+    - common
+    - nodesource.node
+    - afternode
+    - python

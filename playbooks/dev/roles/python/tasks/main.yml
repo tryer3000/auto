@@ -1,0 +1,3 @@
+---
+- name: using tsinghua mirror
+  copy: src=pip.conf dest=/etc/pip.conf
